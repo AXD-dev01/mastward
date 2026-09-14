@@ -133,11 +133,18 @@
     <p class="sub">One web core, every device. Pick your platform.</p>
     <div class="grid">
       <div class="card"><div class="ico">🖥️</div><h3>Mac (Apple Silicon)</h3><p>Self-contained app — no Node or setup required.</p><p style="margin-top:14px"><a class="btn primary" href="./downloads/Mastward_aarch64.dmg">⬇ Download .dmg</a></p></div>
-      <div class="card"><div class="ico">🪟</div><h3>Windows (x64)</h3><p>Self-contained installer — no Node or setup required.</p><p style="margin-top:14px"><a class="btn primary" href="./downloads/Mastward_x64-setup.exe">⬇ Download .exe</a></p></div>
+      <!-- Windows download withdrawn 2026-08-26: the only .exe on disk is v0.1.0 from 12 June and
+           the Mac build is 1.0.0. Tauri does not cross-compile, so this Mac's build-all can never
+           refresh it — it has to be rebuilt on the Windows box. Offering it as "Download" put a
+           2.5-month-old app behind a button that looked identical to the current Mac one. -->
+      <div class="card"><div class="ico">🪟</div><h3>Windows (x64)</h3><p>The Windows build is one version behind and is being rebuilt. Leave your email and we'll send it the moment it's current.</p><p style="margin-top:14px"><a class="btn primary" href="#buy">🔔 Notify me</a></p></div>
       <div class="card"><div class="ico">📱</div><h3>iPhone &amp; iPad</h3><p>Install the web app: open the link on your phone → Share → <b>Add to Home Screen</b>. A native App Store build is coming.</p></div>
       <div class="card"><div class="ico">🤖</div><h3>Android</h3><p>Install the app bundle, or add the web app to your home screen. Play / Galaxy / Amazon builds share one package.</p></div>
     </div>
-    <p class="note" style="margin-top:22px">Windows &amp; Linux desktop builds come from the same core — ask if you need them now.</p>
+    <!-- Was "ask if you need them now" — an invitation to hand over the very v0.1.0 installer the
+         Windows card was just changed to stop offering. Withdrawing the button and keeping the offer
+         in the small print is the same stale build by a slower route. Fixed 2026-08-26. -->
+    <p class="note" style="margin-top:22px">Windows &amp; Linux desktop builds come from the same core and are being rebuilt — leave your email above and we'll send yours the moment it's current.</p>
   </div>
 </section>
 
@@ -226,14 +233,18 @@
     var isLinux = /Linux/.test(ua) && !isAndroid;
     var dev = isPhone ? 'phone' : isWin ? 'windows' : isMac ? 'mac' : isLinux ? 'linux' : 'unknown';
     window.__MW_DEVICE__ = dev;
-    var ready = (dev === 'mac' || dev === 'windows');     // Mac + Windows engines are built
+    // Windows dropped out of `ready` on 2026-08-26. The Windows engine IS built and works — but the
+    // only installer on disk is v0.1.0 (12 June) while Mac ships 1.0.0, and Tauri does not
+    // cross-compile so no build on this Mac can refresh it. Telling a Windows visitor "Ready now"
+    // and handing them that file is the dishonest path. Put Windows back in `ready` the moment a
+    // current .exe exists (rebuild on the Windows host, then check Bin/build-all.sh's freshness gate).
+    var ready = (dev === 'mac');                          // Mac is the only CURRENT desktop build
     window.__MW_INTENT__ = ready ? 'payid' : ('notify-' + dev);
     var DMG = './downloads/Mastward_aarch64.dmg';
-    var WINEXE = './downloads/Mastward_x64-setup.exe';
 
     var B = {
       mac:     { cta: ['⬇ Download for Mac', DMG],            msg: "<b>You're on a Mac.</b> Download Mastward, open it — the engine starts itself. Then drive it from your phone with a QR scan. Apple-Silicon Mac, ready now." },
-      windows: { cta: ['⬇ Download for Windows', WINEXE],     msg: "<b>You're on Windows.</b> Download Mastward, run the installer — the engine starts itself on your PC. Then drive it from your phone. Ready now." },
+      windows: { cta: ['🔔 Notify me — Windows build', '#buy'], msg: "<b>You're on Windows.</b> The Windows engine works — you install it, it starts itself on your PC, and your phone drives it. The current installer is one version behind the Mac one and is being rebuilt, so we're not handing you the old one. Leave your email below and you'll get it the moment it's current." },
       linux:   { cta: ['🔔 Notify me — Linux build', '#buy'],   msg: "<b>You're on Linux.</b> Engine on your box, phone as the remote. The Linux build is in progress — get notified below." },
       phone:   { cta: ['How it works on your phone', '#buy'],   msg: "<b>You're on a phone — and that's the <i>remote</i>, not the engine.</b> Mastward runs on your <b>computer</b> and your phone controls it, exactly like a TV remote. ① Get Mastward on your computer (Mac ready; Windows/Linux in progress). ② Add this page to your home screen and pair. <br><br>Leave your email below and we'll send the right download link for your computer." },
       unknown: { cta: ['See downloads', '#download'],          msg: "Mastward runs on your <b>computer</b> (Mac ready; Windows/Linux soon) and you drive it from any phone or tablet." }
