@@ -132,7 +132,7 @@
     <h2>Download</h2>
     <p class="sub">One web core, every device. Pick your platform.</p>
     <div class="grid">
-      <div class="card"><div class="ico">🖥️</div><h3>Mac (Apple Silicon)</h3><p>Self-contained app — no Node or setup required.</p><p style="margin-top:14px"><a class="btn primary" href="./downloads/Mastward_aarch64.dmg">⬇ Download .dmg</a></p></div>
+      <div class="card"><div class="ico">🖥️</div><h3>Mac (Apple Silicon)</h3><p>Self-contained app — no Node or setup required.</p><p style="margin-top:14px"><a class="btn primary" href="https://github.com/AXD-dev01/mastward/releases/latest/download/Mastward_aarch64.dmg">⬇ Download .dmg</a></p></div>
       <!-- Windows download withdrawn 2026-08-26: the only .exe on disk is v0.1.0 from 12 June and
            the Mac build is 1.0.0. Tauri does not cross-compile, so this Mac's build-all can never
            refresh it — it has to be rebuilt on the Windows box. Offering it as "Download" put a
@@ -234,13 +234,13 @@
     var dev = isPhone ? 'phone' : isWin ? 'windows' : isMac ? 'mac' : isLinux ? 'linux' : 'unknown';
     window.__MW_DEVICE__ = dev;
     // Windows dropped out of `ready` on 2026-08-26. The Windows engine IS built and works — but the
-    // only installer on disk is v0.1.0 (12 June) while Mac ships 1.0.0, and Tauri does not
+    // only installer on disk is v0.1.0 (12 June) while Mac ships 1.1.0, and Tauri does not
     // cross-compile so no build on this Mac can refresh it. Telling a Windows visitor "Ready now"
     // and handing them that file is the dishonest path. Put Windows back in `ready` the moment a
     // current .exe exists (rebuild on the Windows host, then check Bin/build-all.sh's freshness gate).
     var ready = (dev === 'mac');                          // Mac is the only CURRENT desktop build
     window.__MW_INTENT__ = ready ? 'payid' : ('notify-' + dev);
-    var DMG = './downloads/Mastward_aarch64.dmg';
+    var DMG = 'https://github.com/AXD-dev01/mastward/releases/latest/download/Mastward_aarch64.dmg';
 
     var B = {
       mac:     { cta: ['⬇ Download for Mac', DMG],            msg: "<b>You're on a Mac.</b> Download Mastward, open it — the engine starts itself. Then drive it from your phone with a QR scan. Apple-Silicon Mac, ready now." },
@@ -268,7 +268,7 @@
   <div class="wrap">
     <p><b class="mono" style="color:var(--primary)">Mastward</b> — a sovereign product. Your data stays on your machines.</p>
     <p style="margin-top:10px"><a href="./privacy.html">Privacy</a> · <a href="./eula.html">Licence</a> · No analytics, no telemetry, no account.</p>
-    <p style="margin-top:10px;opacity:.6">Security is layered defense, not a guarantee — we never claim "unhackable." © AXD Intelligence.</p>
+    <p style="margin-top:10px;opacity:.6">Security is layered defense, not a guarantee — we never claim "unhackable." Designed by Diego Nanini · © 2026 Diego Nanini · AXD Intelligence.</p>
   </div>
 </footer>
 
